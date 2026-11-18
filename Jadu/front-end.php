@@ -15,6 +15,8 @@
  *    holiday) the NEXT year that has data becomes the current year from the day after the
  *    previous year's last day of term. If there is no later year, the last year stays current.
  *  - Term time = today falls inside any Term A / Term B period; otherwise Holiday time.
+ *  - The half-term break is the gap between Term A and Term B with leading/trailing weekends
+ *    trimmed, so it normally reads Monday to Friday (see termDatesBreak()).
  *  - "Add to calendar" builds an .ics file in the browser: a one-day "term starts" event, a
  *    one-day "term ends" event, and a multi-day half-term event, all marked transparent
  *    (they do not block the user's time).
@@ -35,7 +37,7 @@
  *     years, and "2026" when the year starts and ends in the same calendar year (e.g. a
  *     January-December school year in the southern hemisphere).
  *  5. Wording and format: "Term A", "Half term", "holiday", "half term" and the date format
- *     'j M Y' (termDatesFmt()) are plain strings; localise them as needed. Calendar event
+ *     'D j M' (termDatesFmt(), term cards) and 'l j F' (termDatesFmtLong(), countdown banner) are plain strings; localise them as needed. Calendar event
  *     titles are in termDatesCalendarData().
  *  6. Layout: .term-dates__columns uses three equal columns from 48em; change
  *     grid-template-columns if there are not three terms (e.g. repeat(4, 1fr)).
@@ -62,9 +64,16 @@ if (!function_exists('termDatesClean')) {
         return $d;
     }
 
+    /* Dates on the term cards: day of week, no year (the school year heading implies it), e.g. "Wed 2 Sep". */
     function termDatesFmt($d)
     {
-        return $d->format('j M Y');
+        return $d->format('D j M');
+    }
+
+    /* Dates in the countdown banner, written out in full, e.g. "Friday 23 October". */
+    function termDatesFmtLong($d)
+    {
+        return $d->format('l j F');
     }
 
     /* "2026/27", or "2026" when the year starts and ends in the same calendar year. */
@@ -133,11 +142,18 @@ if (!function_exists('termDatesClean')) {
         return 'This is in ' . $n . ' ' . $unit . $possessive . ' time.';
     }
 
-    /* Half-term break between Term A and Term B, or null when they are back to back. */
+    /* Half-term break between Term A and Term B, shown the way school calendars show it: the
+     * gap between the two terms with any leading and trailing weekend trimmed off (so a break
+     * that follows a Friday and precedes a Monday is Monday-Friday). Returns null when nothing
+     * is left, i.e. the terms are back to back or only a weekend separates them.
+     * Weekend days are ISO weekdays 6 and 7 (Saturday, Sunday); change the test below for a
+     * jurisdiction with a different weekend (e.g. Friday and Saturday = 5 and 6). */
     function termDatesBreak($t)
     {
         $from = $t['ae']->modify('+1 day');
         $to   = $t['bs']->modify('-1 day');
+        while ($from <= $to && (int)$from->format('N') >= 6) { $from = $from->modify('+1 day'); }
+        while ($to >= $from && (int)$to->format('N') >= 6) { $to = $to->modify('-1 day'); }
         return ($from <= $to) ? array($from, $to) : null;
     }
 
@@ -272,14 +288,14 @@ if ($inside) {
 <?php if ($state === 'term') { ?>
     <section class="term-dates__section" aria-labelledby="<?=$widgetID;?>-next">
         <div class="term-dates__next" data-state-show="Term time">
-            <h2 id="<?=$widgetID;?>-next">The next school holiday starts on <?=termDatesEsc(termDatesFmt($stateDate));?></h2>
+            <h2 id="<?=$widgetID;?>-next">The next school holiday starts on <?=termDatesEsc(termDatesFmtLong($stateDate));?></h2>
             <p><?=termDatesEsc(termDatesCountdown($today, $stateDate));?></p>
         </div>
     </section>
 <?php } elseif ($state === 'holiday') { ?>
     <section class="term-dates__section" aria-labelledby="<?=$widgetID;?>-next">
         <div class="term-dates__next" data-state-show="Holiday time">
-            <h2 id="<?=$widgetID;?>-next">The next school half term starts on <?=termDatesEsc(termDatesFmt($stateDate));?></h2>
+            <h2 id="<?=$widgetID;?>-next">The next school half term starts on <?=termDatesEsc(termDatesFmtLong($stateDate));?></h2>
             <p><?=termDatesEsc(termDatesCountdown($today, $stateDate));?></p>
         </div>
     </section>

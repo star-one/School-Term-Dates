@@ -44,6 +44,8 @@
 #lb_widget_content .td-admin__error { font-size: 0.8125rem; color: var(--td-error); font-weight: 600; }
 #lb_widget_content .td-admin__field.has-error input { border: 2px solid var(--td-error); }
 #lb_widget_content .td-admin__summary { color: var(--td-error); font-weight: 600; margin: 0 0 var(--td-space); }
+#lb_widget_content .td-admin__success { margin: var(--td-space) 0 0; padding: 0.75rem 1rem; border-left: 0.375rem solid #0f7a52; background: #e6f4ee; color: #0b4d34; font-weight: 600; }
+#lb_widget_content .td-admin__success:empty { display: none; }
 #lb_widget_content .td-admin__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 #lb_widget_content table.td-admin__list { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
 #lb_widget_content .td-admin__list th, #lb_widget_content .td-admin__list td { border: 1px solid var(--td-border); padding: 0.375rem 0.5rem; text-align: left; vertical-align: top; }
@@ -64,9 +66,10 @@
                 <div class="td-admin__columns" id="td-terms"><!-- Autumn, Spring and Summer cards are built by the script below --></div>
 
                 <div class="td-admin__actions">
-                    <button type="button" id="td-submit" class="btn btn--primary">Submit</button>
+                    <button type="button" id="td-submit" class="btn btn--primary">Save</button>
                     <button type="button" id="td-cancel" hidden>Cancel edit</button>
                 </div>
+                <p id="td-form-success" class="td-admin__success" role="status" aria-live="polite" tabindex="-1"></p>
             </div>
         </td>
     </tr>
@@ -93,6 +96,12 @@
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var FIRST = TERMS[0][0], LAST = TERMS[TERMS.length - 1][0];
     var years = [], editingId = null, loaded = false, dirty = false;
+    // Acknowledgement messages shown after Save / Delete. "Continue" is Jadu's own button, which saves the widget and returns to the page editor. Edit the wording here (e.g. localise it).
+    var MSG = {
+        added: function (label) { return 'School year ' + label + ' has been added. Select Continue to save the widget and publish your changes.'; },
+        updated: function (label) { return 'School year ' + label + ' has been updated. Select Continue to save the widget and publish your changes.'; },
+        deleted: function (label) { return 'School year ' + label + ' has been deleted. Select Continue to save the widget and publish your changes.'; }
+    };
 
     function $(id) { return document.getElementById(id); }
 
@@ -134,6 +143,15 @@
         TERMS.forEach(function (t) { HALVES.forEach(function (h) { k.push(t[0] + '-' + h[0] + '-start', t[0] + '-' + h[0] + '-end'); }); });
         return k;
     }
+    function showSuccess(msg) {
+        var el = $('td-form-success');
+        el.textContent = '';                       // clear first so the same message is announced again
+        setTimeout(function () {
+            el.textContent = msg;
+            if (el.scrollIntoView) { el.scrollIntoView({ block: 'nearest' }); }
+        }, 50);
+    }
+    function clearSuccess() { $('td-form-success').textContent = ''; }
     function persist() {
         $('yearsjson').value = JSON.stringify(years);
         dirty = true;
@@ -239,7 +257,7 @@
     }
     function startEdit(id) {
         var y = years.filter(function (x) { return x.id === id; })[0]; if (!y) { return; }
-        clearErrors(); editingId = id;
+        clearErrors(); clearSuccess(); editingId = id;
         TERMS.forEach(function (t) { HALVES.forEach(function (h) {
             $('td-' + t[0] + '-' + h[0] + '-start').value = y.terms[t[0]][h[0]].start;
             $('td-' + t[0] + '-' + h[0] + '-end').value = y.terms[t[0]][h[0]].end;
@@ -254,10 +272,11 @@
         years = years.filter(function (x) { return x.id !== id; });
         if (editingId === id) { resetForm(); }
         persist(); renderList();
+        showSuccess(MSG.deleted(yearLabel(y)));
     }
 
     $('td-submit').addEventListener('click', function () {
-        clearErrors();
+        clearErrors(); clearSuccess();
         var v = readForm(), e = validate(v);
         if (Object.keys(e).length) { showErrors(e); return; }
         var y = { id: editingId || ('y' + Date.now()), terms: {} };
@@ -267,9 +286,11 @@
                 b: { start: v[t[0] + '-b-start'], end: v[t[0] + '-b-end'] }
             };
         });
+        var wasEditing = !!editingId;
         if (editingId) { years = years.map(function (x) { return x.id === editingId ? y : x; }); }
         else { years.push(y); }
         resetForm(); persist(); renderList();
+        showSuccess(wasEditing ? MSG.updated(yearLabel(y)) : MSG.added(yearLabel(y)));
     });
     $('td-cancel').addEventListener('click', resetForm);
 
