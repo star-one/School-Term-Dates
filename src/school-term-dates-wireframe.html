@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>School Term Dates</title>
+<style>
+body{margin:0}
+.wf .screen.wide { max-width: none; }
+.wf { font: 15px / 1.4 system-ui, -apple-system, Segoe UI, sans-serif; color: var(--fg,#1d2733); }
+.wf .screen { max-width: 420px; margin: 0px auto; background: var(--card,#fff); border: 1px solid var(--bd,#c5cdd6); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.wf .screen[hidden] { display: none; }
+.wf h3 { margin: 0px; font-size: 18px; }
+.wf p { margin: 0px; color: var(--mut,#5d6b7a); }
+.wf .f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--mut,#5d6b7a); }
+.wf input[type="date"], .wf input[type="datetime-local"], .wf input[type="month"], .wf input[type="text"], .wf input[type="email"], .wf input[type="password"], .wf input[type="number"], .wf input[type="search"], .wf input[type="tel"], .wf select { font-style: inherit; font-variant: inherit; font-weight: inherit; font-width: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-variation-settings: inherit; font-kerning: inherit; font-feature-settings: inherit; font-language-override: inherit; font-size-adjust: inherit; font-size: 16px; padding: 9px 10px; border: 1px solid var(--bd,#c5cdd6); border-radius: 6px; background: transparent; color: inherit; width: 100%; }
+.wf .c { display: flex; gap: 8px; align-items: center; }
+.wf .b { font-style: inherit; font-variant: inherit; font-width: inherit; font-size: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-variation-settings: inherit; font-kerning: inherit; font-feature-settings: inherit; font-language-override: inherit; font-size-adjust: inherit; font-weight: 600; padding: 10px 14px; border: 1px solid var(--fg,#1d2733); background: var(--fg,#1d2733); color: var(--card,#fff); border-radius: 6px; cursor: pointer; }
+.wf .b.s { background: transparent; color: var(--fg,#1d2733); }
+.wf .l { color: var(--ac,#1f5fbf); text-decoration: underline; font-size: 14px; }
+.wf .img { min-height: 110px; border: 1px dashed var(--bd,#c5cdd6); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--mut,#5d6b7a); background: repeating-linear-gradient(135deg, transparent 0px, transparent 10px, rgba(128, 128, 128, 0.12) 10px, rgba(128, 128, 128, 0.12) 11px); }
+.wf hr { border-right: 0px; border-bottom: 0px; border-left: 0px; border-image: none; border-top: 1px solid var(--bd,#c5cdd6); width: 100%; margin: 0px; }
+.wf .card { border: 2px solid var(--bd,#c5cdd6); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 10px; box-shadow: lightgrey 1px 1px 5px; }
+.wf .column, .wf .form { display: flex; flex-direction: column; gap: 10px; }
+.wf .nav, .wf .inline { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.wf .section { display: flex; flex-direction: column; gap: 12px; border: 1px dotted var(--bd,#c5cdd6); border-radius: 8px; padding: 12px; }
+.wf .columns { display: grid; gap: 12px; }
+.wf .columns > * { min-width: 0px; }
+.wf .columns > .column { border: 1px dashed var(--bd,#c5cdd6); border-radius: 6px; padding: 8px; }
+.wf .st { flex-basis: 100%; font-weight: 600; font-size: 13px; color: var(--mut,#5d6b7a); }
+.wf .modal { border: 1px solid var(--fg,#1d2733); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 24px; background: var(--card,#fff); }
+.wf table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.wf caption { text-align: left; font-weight: 600; padding-bottom: 6px; }
+.wf th, .wf td { border: 1px solid var(--bd,#c5cdd6); padding: 6px 8px; text-align: left; }
+.wf th { background: rgba(128, 128, 128, 0.12); }
+.wf td { color: var(--mut,#5d6b7a); }
+.wf .wtabs { display: flex; border-bottom: 1px solid var(--bd,#c5cdd6); }
+.wf .wtabs button { font: inherit; background: none; border-width: 0px 0px 3px; border-style: none none solid; border-color: currentcolor currentcolor transparent; border-image: none; padding: 8px 12px; cursor: pointer; color: var(--mut,#5d6b7a); }
+.wf .wtabs button.on { color: var(--fg,#1d2733); border-bottom-color: var(--ac,#1f5fbf); font-weight: 600; }
+.wf .nav { padding-bottom: 10px; border-bottom: 1px solid var(--bd,#c5cdd6); justify-content: space-between; }
+.wf .note { background: var(--note,#fff4c2); border-left: 3px solid var(--noteb,#d4b02a); color: var(--notef,#4d3d00); padding: 6px 10px; font-size: 13px; border-radius: 0px 4px 4px 0px; }
+.wf .unk { color: rgb(179, 38, 30); font-size: 13px; }
+.wf .screen { position: relative; }
+.wf .mtray { margin-top: 16px; border: 2px dashed var(--bd,#c5cdd6); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 12px; }
+.wf .mt-h { font-size: 12px; font-weight: 700; color: var(--mut,#5d6b7a); text-transform: uppercase; letter-spacing: 0.04em; }
+.wf .mframe { display: flex; flex-direction: column; gap: 4px; }
+.wf .mcap { font-size: 13px; color: var(--mut,#5d6b7a); }
+.wf .mback { background: rgba(0, 0, 0, 0.45); border-radius: 8px; padding: 24px 12px; display: flex; justify-content: center; }
+.wf .mover { position: absolute; inset: 0px; background: rgba(0, 0, 0, 0.45); display: flex; justify-content: center; align-items: flex-start; padding: 60px 16px 16px; border-radius: inherit; }
+.wf .mover .modal, .wf .mback .modal { width: min(420px, 100%); }
+.wf input[type="url"], .wf input[type="time"], .wf input[type="week"], .wf input[type="file"], .wf textarea { font-style: inherit; font-variant: inherit; font-weight: inherit; font-width: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-variation-settings: inherit; font-kerning: inherit; font-feature-settings: inherit; font-language-override: inherit; font-size-adjust: inherit; font-size: 16px; padding: 9px 10px; border: 1px solid var(--bd,#c5cdd6); border-radius: 6px; background: transparent; color: inherit; width: 100%; }
+.wf textarea { resize: vertical; min-height: 2.5em; }
+.wf input[type="range"] { width: 100%; }
+.wf .req { color: rgb(179, 38, 30); font-style: normal; font-weight: 700; }
+.wf .hint { font-size: 12px; color: var(--mut,#5d6b7a); }
+.wf .fgrp { border: 0px; margin: 0px; padding: 0px; min-width: 0px; display: flex; flex-direction: column; gap: 6px; }
+.wf .fgrp legend { padding: 0px; margin-bottom: 4px; font-size: 13px; color: var(--mut,#5d6b7a); }
+.wf .rng { display: flex; justify-content: space-between; font-size: 12px; }
+.wf .cust { border: 1px dashed var(--bd,#c5cdd6); border-radius: 6px; padding: 12px; text-align: center; color: var(--mut,#5d6b7a); background: repeating-linear-gradient(135deg, transparent 0px, transparent 10px, rgba(128, 128, 128, 0.12) 10px, rgba(128, 128, 128, 0.12) 11px); }
+.wf .chk { display: flex; flex-direction: column; gap: 4px; }
+.wf .fsteps { display: flex; flex-wrap: wrap; gap: 6px; }
+.wf .fstep { font-style: inherit; font-variant: inherit; font-weight: inherit; font-width: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-variation-settings: inherit; font-kerning: inherit; font-feature-settings: inherit; font-language-override: inherit; font-size-adjust: inherit; font-size: 12px; border: 1px solid var(--bd,#c5cdd6); border-radius: 999px; background: transparent; color: var(--mut,#5d6b7a); padding: 3px 10px; cursor: pointer; }
+.wf .fstep.on { background: var(--fg,#1d2733); border-color: var(--fg,#1d2733); color: var(--card,#fff); font-weight: 600; }
+.wf .fpage, .wf .fpw { display: flex; flex-direction: column; gap: 10px; }
+.wf .fpt { margin: 0px; font-size: 16px; }
+.wf .fnav { display: flex; justify-content: space-between; gap: 8px; }
+.wf .form.mp { border: 1px solid var(--bd,#c5cdd6); border-radius: 8px; padding: 12px; }
+.wf .samp { position: relative; outline: 2px dashed var(--noteb,#d4b02a); outline-offset: 3px; border-radius: 4px; }
+.wf .samp::after { content: "sample"; position: absolute; right: 0px; top: -9px; font-size: 10px; line-height: 1.4; background: var(--note,#fff4c2); color: var(--notef,#4d3d00); padding: 0px 5px; border-radius: 3px; }
+.wf .screen{max-width:1100px;border:0;border-radius:0;padding:24px 16px}
+.wf [hidden]{display:none!important}
+.wf .stbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;padding:6px 16px;background:#fff8d6;border-bottom:1px solid #d9c36a;color:#4d3d00}
+.wf .stbar button{font:inherit;font-size:13px;padding:2px 10px;border:1px solid #b8a04a;border-radius:999px;background:#fff;cursor:pointer}
+.wf .stbar button.on{background:#4d3d00;color:#fff}
+.wf dialog.mdl{border:0;padding:0;background:transparent;width:min(520px,92vw)}
+.wf dialog.mdl::backdrop{background:rgba(0,0,0,.45)}
+@media (max-width:768px){
+  .wf .columns{grid-template-columns:1fr!important}
+  .wf .inline,.wf .nav{flex-direction:column;align-items:stretch}
+  .wf .st{flex-basis:auto}
+  .wf table{display:block;overflow-x:auto}
+}
+</style>
+</head>
+<body class="wf">
+<section class="screen" id="school-term-dates">
+<div class="stbar" role="group" aria-label="Screen state (for reviewers: remove in production)"><span>State:</span><button type="button" data-st="Term time" class="on">Term time</button><button type="button" data-st="Holiday time">Holiday time</button></div>
+<div class="section"><div class="st">Header</div><h3>School Term Dates</h3><div data-in="Term time" class="section"><div class="st">Next holiday</div><h3>The next school holiday starts on [date]</h3><p>This is in [x [days|weeks]] time.</p></div><div data-in="Holiday time" class="section"><div class="st">Next school session</div><h3>The next school half term starts on [date]</h3><p>This is in [x [days|weeks]] time.</p></div></div>
+<div class="section"><div class="st">Current school year</div><h3>School year [current school year]</h3><div class="columns" style="grid-template-columns:1fr 1fr 1fr"><div class="column"><div class="card"><h3>Autumn</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div><div class="column"><div class="card"><h3>Spring</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div><div class="column"><div class="card"><h3>Summer</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div></div><button class="b">Add to calendar</button></div>
+<div class="section"><div class="st">Future years</div><h3>School year [next school year]</h3><div class="columns" style="grid-template-columns:1fr 1fr 1fr"><div class="column"><div class="card"><h3>Autumn</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div><div class="column"><div class="card"><h3>Spring</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div><div class="column"><div class="card"><h3>Summer</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div></div><button class="b">Add to calendar</button></div>
+<div class="section"><div class="st">Past years</div><h3>School year [last school year]</h3><div class="columns" style="grid-template-columns:1fr 1fr 1fr"><div class="column"><div class="card"><h3>Autumn</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div><div class="column"><div class="card"><h3>Spring</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div><div class="column"><div class="card"><h3>Summer</h3><p>[Date from] to [Date to]</p><p>Half Term</p><p>[Date from] to [Date to]</p></div></div></div></div>
+<a class="l" href="#" data-to="form">[CMS Widget settings screen]</a>
+
+</section>
+<section class="screen" id="form" hidden>
+<h3>Manage term dates</h3>
+<div class="section"><div class="st">Add new</div><h3>Add new school year</h3><form class="form" novalidate><div class="columns" style="grid-template-columns:1fr 1fr 1fr"><div class="column"><div class="card"><h3>Autumn</h3><label class="f"><span>Half Term A start <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_a_start" required></label><label class="f"><span>Half Term A end <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_a_end" required></label><label class="f"><span>Half Term B start <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_b_start" required></label><label class="f"><span>Half Term B end <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_b_end" required></label></div></div><div class="column"><div class="card"><h3>Spring</h3><label class="f"><span>Half Term A start <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_a_start" required></label><label class="f"><span>Half Term A end <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_a_end" required></label><label class="f"><span>Half Term B start <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_b_start" required></label><label class="f"><span>Half Term B end <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_b_end" required></label></div></div><div class="column"><div class="card"><h3>Summer</h3><label class="f"><span>Half Term A start <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_a_start" required></label><label class="f"><span>Half Term A end <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_a_end" required></label><label class="f"><span>Half Term B start <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_b_start" required></label><label class="f"><span>Half Term B end <i class="req" aria-hidden="true">*</i></span><input type="date" name="half_term_b_end" required></label></div></div></div><button class="b">Save</button></form></div>
+<div class="section"><div class="st">Edit existing</div></div>
+<table><caption>Existing saved years</caption><tr><th>SchoolYear</th><th>Dates</th><th>Actions</th></tr><tr><td>Text</td><td>Text</td><td>Text</td></tr><tr><td>Text</td><td>Text</td><td>Text</td></tr><tr><td>Text</td><td>Text</td><td>Text</td></tr></table>
+<a class="l" href="#" data-to="school-term-dates">[Term dates display screen]</a>
+
+</section>
+<script>
+const show=id=>{document.querySelectorAll('section').forEach(s=>s.hidden=s.id!==id);scrollTo(0,0)};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-to]');if(t){e.preventDefault();show(t.dataset.to)}const b=e.target.closest('.wtabs button');if(b)b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));});
+function setSt(sec,st){sec.querySelectorAll('[data-in],[data-out]').forEach(function(el){var i=el.dataset.in,o=el.dataset.out;el.hidden=!!((i&&i.split('|').indexOf(st)<0)||(o&&o.split('|').indexOf(st)>=0))});sec.querySelectorAll('.stbar button').forEach(function(b){b.classList.toggle('on',b.dataset.st===st)})}
+document.querySelectorAll('section').forEach(function(sec){var b=sec.querySelector('.stbar button');if(b)setSt(sec,b.dataset.st)});
+document.addEventListener('click',function(e){var o=e.target.closest('[data-opens]');if(o){var d=o.closest('section').querySelector('dialog[data-m="'+o.dataset.opens+'"]');if(d)d.showModal()}var c=e.target.closest('[data-closes]');if(c){var dd=c.closest('dialog');if(dd)dd.close()}if(e.target.tagName==='DIALOG')e.target.close();var sb=e.target.closest('.stbar button');var ss=e.target.closest('[data-state]');var cs=Array.prototype.slice.call(document.querySelectorAll('section')).filter(function(x){return !x.hidden})[0];if(cs&&sb)setSt(cs,sb.dataset.st);else if(cs&&ss)setSt(cs,ss.dataset.state)});
+function fpShow(f,i){var w=[].slice.call(f.children).filter(function(x){return x.classList.contains('fpw')});i=Math.max(0,Math.min(i,w.length-1));w.forEach(function(x,j){x.hidden=j!==i});[].slice.call(f.querySelectorAll('.fstep')).forEach(function(b,j){b.classList.toggle('on',j===i)});var bk=f.querySelector('[data-fpgo="-1"]'),nx=f.querySelector('[data-fpgo="1"]');if(bk)bk.hidden=i===0;if(nx)nx.hidden=i===w.length-1;f.dataset.fpi=i}
+document.addEventListener('submit',function(e){e.preventDefault()});
+document.addEventListener('click',function(e){var g=e.target.closest('[data-fpgo],[data-fpset]');if(!g)return;var f=g.closest('.form');if(f)fpShow(f,g.dataset.fpset!==undefined?+g.dataset.fpset:(+f.dataset.fpi||0)+(+g.dataset.fpgo))});
+</script>
+</body>
+</html>
