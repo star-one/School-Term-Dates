@@ -1,8 +1,8 @@
-# School Term Dates: a Jadu Homepage widget
+# School Term Dates: a Jadu widget and Drupal content type
 
-A Jadu Homepage widget that shows school term and half-term dates to website visitors, with a countdown to the next holiday or the next return to school. Council and school staff maintain the dates in a simple admin form.
+A widget that shows school term and half-term dates to website visitors, with a countdown to the next holiday or the next return to school. Council and school staff maintain the dates in a simple admin form.
 
-Built for **Jadu Central 3.6.10** (Jadu Central #155). It uses Jadu's standard widget pair, a `settings.php` (the admin form) and a `front-end.php` (what the public sees). It has no database tables, no server-side storage code and no external dependencies.
+The Jadu widget uses Jadu's standard widget pair, a `settings.php` (the admin form) and a `front-end.php` (what the public sees). It has no database tables, no server-side storage code and no external dependencies.
 
 ## What it does
 
@@ -96,4 +96,4 @@ Each file begins with a comment block explaining the manual changes involved. In
 
 ## Licence
 
-Released under the [MIT Licence](LICENSE). Before publishing, replace `[YOUR NAME OR ORGANISATION]` in the `LICENSE` file.
+Released under the [MIT Licence](LICENSE).
